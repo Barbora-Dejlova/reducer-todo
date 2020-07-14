@@ -1,24 +1,31 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Todos from './components/Todos';
+import TodoForm from './components/TodoForm';
+
+import {reducer} from './reducers/reducer';
+import {toggleCompleted, addTodo, clearCompleted} from './actions/todoActions';
 
 function App() {
+  const [todos, dispatch] = useReducer(reducer);
+
+  const toggle = (id) => {
+    dispatch(toggleCompleted(id));
+  };
+
+  const add = item => {
+    dispatch(addTodo(item));
+  };
+
+  const clear = () => {
+    dispatch(clearCompleted());
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Todos todos={todos} toggleCompleted={toggle} />
+      <TodoForm addTodo={add} />
     </div>
   );
 }
